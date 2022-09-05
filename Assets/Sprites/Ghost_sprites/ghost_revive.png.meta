@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b1ce31f4869104b06b6aa716c81030b8
+guid: 7a343d58e735941a0ace51890a79c672
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -106,10 +106,10 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: pac_student_death_0
+      name: ghost_revive_0
       rect:
         serializedVersion: 2
-        x: 48
+        x: 44
         y: 316
         width: 28
         height: 28
@@ -120,19 +120,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d1762e86e7abc4069a5990df396e4c93
-      internalID: 421784793
+      spriteID: 7f9b2d0fedabe4c61a674768543cd68c
+      internalID: -479796875
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pac_student_death_1
+      name: ghost_revive_1
       rect:
         serializedVersion: 2
-        x: 180
+        x: 172
         y: 316
-        width: 24
+        width: 28
         height: 28
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -141,20 +141,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 857278da7395340cb892e03d9cc89329
-      internalID: 2024006049
+      spriteID: 810055eaad12c46bb8b85eaf4a28314c
+      internalID: -589645799
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pac_student_death_2
+      name: ghost_revive_2
       rect:
         serializedVersion: 2
-        x: 308
+        x: 300
         y: 316
-        width: 24
-        height: 24
+        width: 28
+        height: 28
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -162,20 +162,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9e036dcbdaceb49599a2ad1fa3e0e498
-      internalID: -1504350537
+      spriteID: 4e49d86a2a50e47c1bf5273bb849ef3b
+      internalID: -1015117880
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pac_student_death_3
+      name: ghost_revive_3
       rect:
         serializedVersion: 2
-        x: 52
+        x: 44
         y: 188
-        width: 24
-        height: 19
+        width: 28
+        height: 28
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -183,20 +183,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d36154a2a88254273b3819ae0b3296dc
-      internalID: -1092253116
+      spriteID: 7624be5abf199420e98766c2842b0145
+      internalID: 648494350
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pac_student_death_4
+      name: ghost_revive_4
       rect:
         serializedVersion: 2
-        x: 180
+        x: 172
         y: 188
-        width: 24
-        height: 15
+        width: 28
+        height: 28
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -204,20 +204,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 577ea34995c5249b9a194ca399c68097
-      internalID: -1940487116
+      spriteID: 269a9af892d8049b1bc635565241d6bb
+      internalID: -1236593685
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pac_student_death_5
+      name: ghost_revive_5
       rect:
         serializedVersion: 2
-        x: 312
+        x: 300
         y: 188
-        width: 16
-        height: 15
+        width: 28
+        height: 28
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -225,8 +225,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9200ff8d981f34510a9b6b6aaa5abf5e
-      internalID: 1276170742
+      spriteID: 0ee2a0b238ea44b4c8bebe4f178bce8c
+      internalID: -136038402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ghost_revive_6
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 60
+        width: 28
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 82aa491b7fc3f464f9f2d45e19275ade
+      internalID: 2070763373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ghost_revive_7
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 60
+        width: 28
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50530d8d27e2b4315afebda723db2ea6
+      internalID: 616481976
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ghost_revive_8
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 60
+        width: 28
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cbd531b8e71724db78ce485218d46132
+      internalID: 715306088
       vertices: []
       indices: 
       edges: []
@@ -242,12 +305,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      pac_student_death_5: 1276170742
-      pac_student_death_3: -1092253116
-      pac_student_death_2: -1504350537
-      pac_student_death_0: 421784793
-      pac_student_death_4: -1940487116
-      pac_student_death_1: 2024006049
+      ghost_revive_2: -1015117880
+      ghost_revive_5: -136038402
+      ghost_revive_4: -1236593685
+      ghost_revive_7: 616481976
+      ghost_revive_8: 715306088
+      ghost_revive_1: -589645799
+      ghost_revive_3: 648494350
+      ghost_revive_6: 2070763373
+      ghost_revive_0: -479796875
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 
