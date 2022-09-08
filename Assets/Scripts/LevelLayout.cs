@@ -8,12 +8,13 @@ public class LevelLayout : MonoBehaviour
 {
 
     public Sprite emptyTile, outsideCorner, outsideWall,
-                        insideCorner, insideWall, pellet, powerPellet, junction;
+                        insideCorner, insideWall, pellet, junction;
 
+    public GameObject powerPellet;
 
-    public string[] leveltype = {"Full", "Bottom quarter", "Half bottom", "Half upper"};
     public bool update = false;
     public bool set_position = false;
+    public bool delete = false;
     private int[,] levelMap = 
     { 
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7}, 
@@ -33,12 +34,12 @@ public class LevelLayout : MonoBehaviour
         {0,0,0,0,0,0,5,0,0,0,4,0,0,0}, 
     }; 
 
-    private int[,] levelMapHFlip, levelMapVFlip;
+    private int[,] levelMapHFlip;
     private int[,] completeLevel = new int[30, 28];
     private int[,] halfLevelBottom = new int[15,28];
     private int[,] halfLevelUp = new int[15,28];
 
-    private int[,] rotationMapHFlip, rotationMapVFlip;
+    private int[,] rotationMapHFlip;
     private int[,] completeRotation = new int[30, 28];
     private int[,] halfRotationBottom = new int[15,28];
     private int[,] halfRotationUp = new int[15,28];
@@ -66,64 +67,33 @@ public class LevelLayout : MonoBehaviour
         {0,0,0,0,0,0,0,0,0,0,90,0,0,0}, 
     };
 
-    private int[] rotationMap2 = {
-        90,0,0,0,0,0,0,0,0,0,0,0,0,0, 
-        90,0,0,0,0,0,0,0,0,0,0,0,0,90, 
-        90,0,90,0,0,0,0,90,0,0,0,0,0,90, 
-        90,0,90,0,0,90,0,90,0,0,0,90,0,90, 
-        90,0,180,0,0,-90,0,180,0,0,0,-90,0,180, 
-        90,0,0,0,0,0,0,0,0,0,0,0,0,0, 
-        90,0,90,0,0,0,0,90,0,0,90,0,0,0,
-        90,0,180,0,0,-90,0,90,90,0,180,0,0,0, 
-        90,0,0,0,0,0,0,90,90,0,0,0,0,90, 
-        180,0,0,0,0,0,0,90,180,0,0,0,0,90, 
-        0,0,0,0,0,90,0,90,90,0,0,-90,0,180, 
-        0,0,0,0,0,90,0,90,90,0,0,0,0,0, 
-        0,0,0,0,0,90,0,90,90,0,90,0,0,0,
-        0,0,0,0,0,-90,0,180,-90,0,90,0,0,0, 
-        0,0,0,0,0,0,0,0,0,0,90,0,0,0 
-    };
 
-    private int[,] rotation, level;
-
+    
     void Awake(){
 
 
-        level = levelMap;
-        rotation = rotationMap;
-
-        for (int i = 0; i < halfLevelBottom.GetLength(0); i++){
-                for (int j = 0; j < halfLevelBottom.GetLength(1); j++){ 
-                    DrawTile(i,j, halfLevelBottom[i,j]);  
+        for (int i = 0; i < 30; i++){
+                for (int j = 0; j < 28; j++){ 
+                    if(i < 15)
+                        
+                        //hai semplicemente invertito i e j in drawtile
+                        DrawTile(j,i, halfLevelBottom[i,j]);
+                    else {
+                        DrawTile(j,i, halfLevelUp[i - 15,j]);
+                    }
                 }
             }
     }
+
     // Update is called once per frame
     void Update()
     {
-
-        if (leveltype.Equals("Full")){
-
-            level = completeLevel;
-            rotation = completeRotation;
-
-        }else if (leveltype.Equals("Half bottom")){
-            level = halfLevelBottom;
-            rotation = halfRotationBottom;
-        }else if (leveltype.Equals("Half upper")){
-            level = halfLevelUp;
-            rotation = halfRotationUp;
-        }else {
-            level = levelMap;
-            rotation = rotationMap;
-        }
 
         if (update){
 
             DestroyAllTiles();
             update = false;
 
-            //int c = 0;
             for (int i = 0; i < 30; i++){
                 for (int j = 0; j < 28; j++){
 
@@ -133,9 +103,11 @@ public class LevelLayout : MonoBehaviour
                     FlipVerticallyLevel();
                     
                     if(i < 15)
-                        DrawTile(i,j, halfLevelBottom[i,j]);
+                        
+                        //hai semplicemente invertito i e j in drawtile
+                        DrawTile(j,i, halfLevelBottom[i,j]);
                     else {
-                        DrawTile(i,j, halfLevelUp[i - 15,j]);
+                        DrawTile(j,i, halfLevelUp[i - 15,j]);
                     }
                 }
             }
@@ -146,15 +118,20 @@ public class LevelLayout : MonoBehaviour
             SetPosition();
         }
 
+        if (delete){
+            delete = false;
+            DestroyAllTiles();
+        }
+
+
     }
 
     void SetPosition(){
 
-        //rotationMap2[91] = 90;
-        //rotationMap2[92] = 0;
         GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tiles");
 
         int n = 0;
+
         for (int i = 0; i < 30; i ++){
             for (int j = 0; j < 28; j++){
 
@@ -162,25 +139,44 @@ public class LevelLayout : MonoBehaviour
                 // i è la x
 
                 if (j > 13 && i <15){ //quadrante in alto a sx
-                    /*if (completeLevel[i,j] == 3 || completeLevel[i,j] == 1){
-                        tiles[n].transform.eulerAngles = new Vector3(180,0, halfRotationBottom[i,j]);
-                    } else */tiles[n].transform.eulerAngles = new Vector3(180,0,halfRotationBottom[i,j]);
+                   tiles[n].transform.eulerAngles = new Vector3(0,0,halfRotationBottom[i,j] + 90);
                 } else if (i < 15 && j <=14){ // quadrante in basso a sx
-                    tiles[n].transform.eulerAngles = new Vector3(0,0,halfRotationBottom[i,j]);
+                    tiles[n].transform.eulerAngles = new Vector3(0,180,halfRotationBottom[i,j] + 90);
                 } else if (i >= 15){ // quadrante destro
-                    tiles[n].transform.eulerAngles = new Vector3(180,180,halfRotationUp[i - 15,j]);
+                    tiles[n].transform.eulerAngles = new Vector3(180,0,halfRotationUp[i - 15,j] + 90);
                     if (j <14){
-                        tiles[n].transform.eulerAngles = new Vector3(0,180,halfRotationUp[i - 15,j]);
+                        tiles[n].transform.eulerAngles = new Vector3(180,180,halfRotationUp[i - 15,j] +90);
                     }
-                } 
-                    
+                }
+
+                /*if( i >= 15){ //parte sotto????
+                    tiles[n].transform.eulerAngles = new Vector3(0,180,halfRotationBottom[i-15,j] + 90);
+                } else{
+                    tiles[n].transform.eulerAngles = new Vector3(0,180,halfRotationBottom[i,j] + 90);
+                }
+
+                if ( j >= 14 && i >= 15){
+                    tiles[n].transform.eulerAngles = new Vector3(0,180,halfRotationBottom[i-15,j] - 90);
+                }*/
+                
                 
                 n++;
 
-                //if (n > 410) break;
             }
-        } 
-            
+        }      
+    }
+
+    void Rotate90(){
+
+        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tiles");
+
+        for (int c = 0; c < tiles.Length; c++){
+            var otherPosn = tiles[c].transform.rotation;
+
+            Quaternion target = Quaternion.Euler(otherPosn.x, otherPosn.y, 90);
+            tiles[c].transform.rotation = target;
+            //tiles[n].transform.Rotate(0.0f, 0.0f, 90.0f, Space.Self);
+        }
     }
 
     void DestroyAllTiles()
@@ -246,12 +242,12 @@ public class LevelLayout : MonoBehaviour
         int rows = levelMap.GetLength(0);
         int i = 0;
         
-        //fliph
+
+
         for (int row = 0; row < rows; row++)
         {
             i = 0;
 
-            //flip row per each column
             for (int index = columns-1; index >= 0; index--)
             {
                 levelMapHFlip[row, i] = levelMap[row,index];
@@ -259,8 +255,6 @@ public class LevelLayout : MonoBehaviour
                 i++;
             } 
         }
-
-        //levelMap = levelMapHFlip;
     }
 
 
@@ -269,6 +263,8 @@ public class LevelLayout : MonoBehaviour
         g.gameObject.tag="Tiles";
         g.transform.position = new Vector3(x, y);
         SpriteRenderer renderer = g.AddComponent<SpriteRenderer>();
+        Animator animator = g.AddComponent<Animator>();
+        //AnimatorController ac = g.AddComponent<AnimatorController>();
         
         switch (val)
         {
@@ -296,9 +292,7 @@ public class LevelLayout : MonoBehaviour
                 renderer.sprite = pellet;
             break;
             case 6:
-                g.transform.position = new Vector3(x,y);
-                renderer.sprite = powerPellet;
-                
+                Instantiate(powerPellet, new Vector3(x,y), Quaternion.identity);
             break;
             case 7:
                 g.transform.position = new Vector3(x,y);

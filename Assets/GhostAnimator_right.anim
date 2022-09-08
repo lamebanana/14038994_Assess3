@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: power_pellet
+  m_Name: GhostAnimator_right
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -20,9 +20,9 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 684868062, guid: 718d6864d11484fb7b8c6100db6dcd96, type: 3}
+      value: {fileID: 1889032568, guid: 5f5ab6cab7bf94565a20af3ca030860c, type: 3}
     - time: 0.2
-      value: {fileID: -542884120, guid: 718d6864d11484fb7b8c6100db6dcd96, type: 3}
+      value: {fileID: -1594012242, guid: 5f5ab6cab7bf94565a20af3ca030860c, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -43,8 +43,8 @@ AnimationClip:
       isPPtrCurve: 1
       isIntCurve: 0
     pptrCurveMapping:
-    - {fileID: 684868062, guid: 718d6864d11484fb7b8c6100db6dcd96, type: 3}
-    - {fileID: -542884120, guid: 718d6864d11484fb7b8c6100db6dcd96, type: 3}
+    - {fileID: 1889032568, guid: 5f5ab6cab7bf94565a20af3ca030860c, type: 3}
+    - {fileID: -1594012242, guid: 5f5ab6cab7bf94565a20af3ca030860c, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
