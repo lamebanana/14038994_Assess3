@@ -128,7 +128,7 @@ public class LevelLayout : MonoBehaviour
 
     void SetPosition(){
 
-        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tiles");
+        GameObject[] tiles = GameObject.FindGameObjectsWithTag("GameController");
 
         int n = 0;
 
@@ -168,7 +168,7 @@ public class LevelLayout : MonoBehaviour
 
     void Rotate90(){
 
-        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tiles");
+        GameObject[] tiles = GameObject.FindGameObjectsWithTag("GameController");
 
         for (int c = 0; c < tiles.Length; c++){
             var otherPosn = tiles[c].transform.rotation;
@@ -181,7 +181,7 @@ public class LevelLayout : MonoBehaviour
 
     void DestroyAllTiles()
     {
-        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tiles");
+        GameObject[] tiles = GameObject.FindGameObjectsWithTag("GameController");
 
         for(int i = 0; i < tiles.Length; i++)
         {
@@ -260,7 +260,7 @@ public class LevelLayout : MonoBehaviour
 
     private void DrawTile(int x, int y, int val){
         GameObject g = new GameObject();
-        g.gameObject.tag="Tiles";
+        g.gameObject.tag="GameController";
         g.transform.position = new Vector3(x, y);
         SpriteRenderer renderer = g.AddComponent<SpriteRenderer>();
         Animator animator = g.AddComponent<Animator>();
@@ -300,4 +300,7 @@ public class LevelLayout : MonoBehaviour
             break;
         }
     }
+
+ 
+
 }
