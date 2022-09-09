@@ -7,6 +7,7 @@ public class PacMovement : MonoBehaviour
 
 	public Transform pacman;
 	private Animator anim;
+	private AudioSource source;
 
 	private string[] triggers = {"GoRight","GoDown", "GoLeft", "GoUp"};
 	/*private Transform[] points = new Transform[4]; /*{{6,28, 0}, {12,28, 0},
@@ -24,7 +25,7 @@ public class PacMovement : MonoBehaviour
     {
 		float r = Random.Range(0.5f, 1.1f);
 		coroutine = move(r);
-
+		source = GetComponent<AudioSource>();
 		
 		StartCoroutine(coroutine);
 		
@@ -39,13 +40,17 @@ public class PacMovement : MonoBehaviour
     IEnumerator move(float waitTime)
 	{
 		while (true){
+
+			source.Play();
+			
 			for (int i = 0 ; i < 4; i++){
+
 				pacman.position = patrol[i];
 
 				anim = pacman.GetComponent<Animator>();
 				anim.SetTrigger(triggers[i]);
-				// add animation (triggers)
-				//order: right - down - left - up
+
+
 				//add audio
 				yield return new WaitForSeconds(waitTime);
 			}
