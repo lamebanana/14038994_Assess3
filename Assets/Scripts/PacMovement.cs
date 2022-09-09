@@ -23,9 +23,10 @@ public class PacMovement : MonoBehaviour
 
     void Start()
     {
+		//GameObject prefab = pacman.GetComponent<AudioSource>();
 		float r = Random.Range(0.5f, 1.1f);
 		coroutine = move(r);
-		source = GetComponent<AudioSource>();
+		source = pacman.GetComponent<AudioSource>();
 		
 		StartCoroutine(coroutine);
 		
@@ -40,18 +41,15 @@ public class PacMovement : MonoBehaviour
     IEnumerator move(float waitTime)
 	{
 		while (true){
-
-			source.Play();
 			
 			for (int i = 0 ; i < 4; i++){
 
-				pacman.position = patrol[i];
-
 				anim = pacman.GetComponent<Animator>();
 				anim.SetTrigger(triggers[i]);
+				pacman.position = patrol[i];
 
-
-				//add audio
+				source.Play();
+				
 				yield return new WaitForSeconds(waitTime);
 			}
 		}
