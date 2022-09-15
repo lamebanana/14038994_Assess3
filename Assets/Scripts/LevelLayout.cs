@@ -107,7 +107,7 @@ public class LevelLayout : MonoBehaviour
                         //hai semplicemente invertito i e j in drawtile
                         DrawTile(j,i, halfLevelBottom[i,j]);
                     else {
-                        DrawTile(j,i, halfLevelUp[i - 15,j]);
+                        DrawTile(j,i, halfLevelUp[i - 14,j]);
                     }
                 }
             }
@@ -143,9 +143,9 @@ public class LevelLayout : MonoBehaviour
                 } else if (i < 15 && j <=14){ // quadrante in basso a sx
                     tiles[n].transform.eulerAngles = new Vector3(0,180,halfRotationBottom[i,j] + 90);
                 } else if (i >= 15){ // quadrante destro
-                    tiles[n].transform.eulerAngles = new Vector3(180,0,halfRotationUp[i - 15,j] + 90);
+                    tiles[n].transform.eulerAngles = new Vector3(180,0,halfRotationUp[i - 14,j] + 90);
                     if (j <14){
-                        tiles[n].transform.eulerAngles = new Vector3(180,180,halfRotationUp[i - 15,j] +90);
+                        tiles[n].transform.eulerAngles = new Vector3(180,180,halfRotationUp[i - 14,j] +90);
                     }
                 }
 
