@@ -68,22 +68,6 @@ public class LevelLayout : MonoBehaviour
     };
 
 
-    
-    void Awake(){
-
-
-        for (int i = 0; i < 30; i++){
-                for (int j = 0; j < 28; j++){ 
-                    if(i < 15)
-                        
-                        //hai semplicemente invertito i e j in drawtile
-                        DrawTile(j,i, halfLevelBottom[i,j]);
-                    else {
-                        DrawTile(j,i, halfLevelUp[i - 15,j]);
-                    }
-                }
-            }
-    }
 
     // Update is called once per frame
     void Update()
