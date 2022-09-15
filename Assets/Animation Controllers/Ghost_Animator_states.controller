@@ -29,7 +29,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GhostAnimator_left
+  m_Name: GhostAnimator_revive
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -43,7 +43,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: b66f87d987f6b495b8ed3b06cfbeb256, type: 2}
+  m_Motion: {fileID: 7400000, guid: ffc212a7f417c49b7aa03d54bfac5398, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -56,7 +56,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GhostAnimator_up
+  m_Name: GhostAnimator_dead_state
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -70,7 +70,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 89965befd7674429387641405b030d59, type: 2}
+  m_Motion: {fileID: 7400000, guid: 3a6015efef7b4452cbd812cbc75f3229, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -113,7 +113,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ghost_movement
+  m_Name: Ghost_Animator_states
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:
@@ -180,7 +180,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GhostAnimator_down
+  m_Name: GhostAnimator_normal_state
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -194,7 +194,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 187c9124039b04b3a9c6871ead81fb34, type: 2}
+  m_Motion: {fileID: 7400000, guid: 47ade0d554c3349e89804751d9be417c, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -207,7 +207,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GhostAnimator_right
+  m_Name: GhostAnimator_scared_state
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -221,7 +221,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: e05b66aa5439c4ba6b6c825a47890c63, type: 2}
+  m_Motion: {fileID: 7400000, guid: eb7812cef761f4e8d8d153e82b94a294, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
