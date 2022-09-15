@@ -19,6 +19,8 @@ public class PacMovement : MonoBehaviour
 
     void Start()
     {
+		anim = pacman.GetComponent<Animator>();
+		source = pacman.GetComponent<AudioSource>();
 		StartCoroutine(MoveToPosition());
     }
 
@@ -32,13 +34,18 @@ public class PacMovement : MonoBehaviour
 		while (true){
 			for (int i = 0 ; i < 4; i ++){
 
+				anim.SetTrigger(triggers[i]);
 				float elapsedTime = 0.0f;
 
 				while(elapsedTime < desiredDuration){
 
 					pacman.position = Vector3.Lerp(startPoints[i], endPoints[i], elapsedTime/desiredDuration);
 					elapsedTime += Time.deltaTime;
-					//anim.SetTrigger(triggers[i]);
+
+					while(!source.isPlaying){
+						source.Play();
+					}
+					
 					yield return new WaitForEndOfFrame();
 				}
 
