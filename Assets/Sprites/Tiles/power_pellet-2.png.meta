@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 718d6864d11484fb7b8c6100db6dcd96
+guid: 31669791a52a34e00bf8841919609874
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -120,8 +120,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: fe6ae5752a1124429841c472ae9e453b
-      internalID: 684868062
+      spriteID: 5269692f7cf864cb3956604f994fe2b8
+      internalID: -1266614080
       vertices: []
       indices: 
       edges: []
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c7d116dae19484aed8f7a82c31ca3678
-      internalID: -542884120
+      spriteID: edebbddaf11a84a9ab9323230514678b
+      internalID: 2144861539
       vertices: []
       indices: 
       edges: []
@@ -158,8 +158,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      power_pellet-2_1: -542884120
-      power_pellet-2_0: 684868062
+      power_pellet-2_1: 2144861539
+      power_pellet-2_0: -1266614080
   spritePackingTag: 
   pSDRemoveMatte: 0
   userData: 
