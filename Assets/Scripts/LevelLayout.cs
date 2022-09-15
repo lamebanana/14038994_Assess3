@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.IO;
 
 [ExecuteInEditMode]
 public class LevelLayout : MonoBehaviour
@@ -12,9 +12,6 @@ public class LevelLayout : MonoBehaviour
 
     public GameObject powerPellet;
 
-    public bool update = false;
-    public bool set_position = false;
-    public bool delete = false;
     private int[,] levelMap = 
     { 
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7}, 
@@ -45,143 +42,343 @@ public class LevelLayout : MonoBehaviour
     private int[,] halfRotationUp = new int[15,28];
 
 
-// these rotations are calculated for croner sprites like |^ and centered walls like |
-    private int [,] rotationMap =
-    {
-        {90,0,0,0,0,0,0,0,0,0,0,0,0,0}, 
-        {90,0,0,0,0,0,0,0,0,0,0,0,0,90}, 
-        {90,0,90,0,0,0,0,90,0,0,0,0,0,90},
-        {90,0,90,0,0,90,0,90,0,0,0,90,0,90}, 
-        {90,0,180,0,0,-90,0,180,0,0,0,-90,0,180}, 
-        {90,0,0,0,0,0,0,0,0,0,0,0,0,0}, 
+// these rotations are calculated for corner sprites like |^ and centered walls like |
+    private int [,] rotationMap = new int[15,14];
+
+    private bool [,] rotationMap2 = new bool[15,14];
+
+    private GameObject[,] tilesOrdered = new GameObject[30,28];
 
 
-        {90,0,90,0,0,0,0,90,0,0,90,0,0,0,}, 
-        {90,0,180,0,0,-90,0,90,90,0,180,0,0,0}, 
-        {90,0,0,0,0,0,0,90,90,0,0,0,0,90}, 
-        {180,0,0,0,0,0,0,90,180,0,0,0,0,90}, 
-        {0,0,0,0,0,90,0,90,90,0,0,-90,0,180}, 
-        {0,0,0,0,0,90,0,90,90,0,0,0,0,0}, 
-        {0,0,0,0,0,90,0,90,90,0,90,0,0,0},
-        {0,0,0,0,0,-90,0,180,-90,0,90,0,0,0}, 
-        {0,0,0,0,0,0,0,0,0,0,90,0,0,0}, 
-    };
+    void CreateRotationMap(){
 
+        // level map [15, 14]
+
+
+        for (int j = 0; j < 14; j ++){
+            for (int i = 0; i < 15; i ++){
+
+                
+                rotationMap[i,j] = 0;
+                rotationMap2[i,j] = false;
+
+                // adjusting around empty/pellet tiles
+                if (levelMap[i,j] == 0 || levelMap[i,j] == 5 || levelMap[i,j] == 6){
+
+                    
+
+                    if (i != 0){
+                        if ((levelMap[i-1,j] == 2 || levelMap[i-1,j] == 4 || levelMap[i-1, j] == 7)){
+                            //if(!rotationMap2[i-1,j])
+                            rotationMap[i-1,j] = 90;
+                            rotationMap2[i-1,j] = true;
+                        } 
+
+                    }
+
+                    if (i != 14){
+                        if ((levelMap[i+1,j] == 2 || levelMap[i+1,j] == 4 || levelMap[i+1, j] == 7)){
+                                if(!rotationMap2[i+1,j])
+                                    rotationMap[i+1,j] = 90;
+
+                            rotationMap2[i+1,j] = true;
+                        }
+                    }
+
+                    if (j != 0){
+
+                        if ((levelMap[i,j-1] == 2 || levelMap[i,j-1] == 4 || levelMap[i, j-1] == 7)){
+                            if(!rotationMap2[i,j-1])
+                                rotationMap[i,j-1] = 0;
+
+                            rotationMap2[i,j-1] = true;
+                        }
+                    } 
+                    
+                    if (j != 13){
+
+                        if ((levelMap[i,j+1] == 2 || levelMap[i,j+1] == 4 || levelMap[i, j+1] == 7)){
+                            if(!rotationMap2[i,j+1])
+                            rotationMap[i,j+1] = 90;
+
+                            rotationMap2[i,j+1] = true;
+                        }
+                    } 
+                }
+
+                //adjusting walls
+                if (levelMap[i,j] == 2 || levelMap[i,j] == 4){
+
+                    if (i != 0)
+                    if (levelMap[i-1,j] == 0 || levelMap[i-1,j] == 5 || levelMap[i-1, j] == 6){
+                        
+                            rotationMap[i, j] = 90;
+                            rotationMap2[i, j] = true;
+                        
+                            
+
+                        
+                    }
+                }
+
+                
+                //if there is an internal corner on the edges, rotate it towards the extern of the maze
+                if (levelMap[i,j] == 3){
+                    if ( i == 0 && (levelMap[i+1,j] == 0 || levelMap[i+1,j] == 5 || levelMap[i+1,j] == 6)){
+                        rotationMap[i,j] = 270;
+                        rotationMap2[i,j] = true;
+                    }
+
+                    if ( i == 14 && (levelMap[i-1,j] == 0 || levelMap[i-1,j] == 5 || levelMap[i-1,j] == 6)){
+                        rotationMap[i,j] = 90;
+                        rotationMap2[i,j] = true;
+                    }
+
+                    if ( j == 13 && (levelMap[i,j-1] == 0 || levelMap[i,j-1] == 5 || levelMap[i,j-1] == 6)){
+                        rotationMap[i,j] = 0;
+                        rotationMap2[i,j] = true;
+                    }
+                }
+
+                // adjusting corners
+                if (levelMap[i,j] == 1 || levelMap[i,j] == 3){
+
+                    if(i < 14 && j < 13){
+                        if ((levelMap[i,j + 1] == 2 || levelMap[i,j + 1] == 4) && (levelMap[i+1,j] == 2 || levelMap[i+1,j] == 4)){
+
+
+                            rotationMap[i,j] = 90;
+                            rotationMap2[i,j] = true;
+
+                        }
+
+                        if ((levelMap[i,j + 1] == 1 || levelMap[i,j + 1] == 3) && (levelMap[i+1,j] == 2 || levelMap[i+1,j] == 4)){
+
+                            
+                            rotationMap[i,j] = 90;
+                            rotationMap2[i,j] = true;
+
+                        }
+
+                        if ((levelMap[i+1,j] == 1 || levelMap[i+1,j] == 3) && (levelMap[i,j+1] == 2 || levelMap[i,j+1] == 4)){
+
+                            //if(rotationMap2[i+1, j] || rotationMap2[i, j+1]){
+                                rotationMap[i,j] = 90;
+                                rotationMap2[i,j] = true;
+                            //}
+                        }
+                      
+                    }
+                    
+                    if(i > 0 && j > 0){
+                        if ((levelMap[i,j - 1] == 2 || levelMap[i,j - 1] == 4) && (levelMap[i-1,j] == 2 || levelMap[i-1,j] == 4)){
+
+                            //if(rotationMap2[i,j-1] || rotationMap2[i-1, j]){
+                                rotationMap[i,j] = 270;
+                                rotationMap2[i,j] = true;
+                            //}
+
+                        }
+
+                        if ((levelMap[i,j - 1] == 1 || levelMap[i,j - 1] == 3) && (levelMap[i-1,j] == 2 || levelMap[i-1,j] == 4)){
+
+                             //if(rotationMap2[i,j-1] || rotationMap2[i-1, j]){
+                                rotationMap[i,j] = 270;
+                                rotationMap2[i,j] = true;
+                             //}
+                        }
+
+                        if ((levelMap[i-1,j] == 1 || levelMap[i-1,j] == 3) && (levelMap[i,j-1] == 2 || levelMap[i,j-1] == 4)){
+
+                             //if(rotationMap2[i,j-1]){
+
+                                    rotationMap[i,j] = 270;
+                                    rotationMap2[i,j] = true;
+                             //}
+                        }
+                    }
+
+                
+
+                    if (i < 14 && j > 0){
+                        if ((levelMap[i+1,j] == 2 || levelMap[i+1,j] == 4) && (levelMap[i,j-1] == 2 || levelMap[i,j-1] == 4)){
+
+                            if(rotationMap2[i+1,j] || rotationMap2[i, j-1]){
+                                rotationMap[i,j] = 180;
+                                rotationMap2[i,j] = true;
+                            }
+                            
+                        }
+
+                        if ((levelMap[i+1,j] == 1 || levelMap[i+1,j] == 3) && (levelMap[i,j-1] == 2 || levelMap[i,j-1] == 4)){
+
+                            if(rotationMap2[i+1, j] || rotationMap2[i, j-1]){
+                                rotationMap[i,j] = 180;
+                                rotationMap2[i,j] = true;
+                            }
+                        }
+
+                        if ((levelMap[i+1,j] == 2 || levelMap[i+1,j] == 4) && (levelMap[i,j-1] == 1 || levelMap[i,j-1] == 3)){
+
+                            if(rotationMap2[i+1, j] || rotationMap2[i, j-1]){
+                                rotationMap[i,j] = 180;
+                                rotationMap2[i,j] = true;
+                            }
+                        }
+
+                        
+                    }
+
+                    //adjusting pieces that are surrounded by tiles that arent empty or pellets
+
+                    if(i < 13 && i > 0 && j < 13 && j > 0){
+                        if (checkAround(i,j)){
+
+                            
+                            if (levelMap[i,j-1] == 4 && rotationMap[i, j-1] == 0){
+
+                                if (levelMap[i-1, j]== 4 && rotationMap[i-1,j] == 0)
+                                    rotationMap[i,j] = 0;
+
+                                if (levelMap[i-1, j] == 3 && rotationMap[i-1, j] != 90){
+                                    rotationMap[i,j] = 90;
+                                }
+                                rotationMap2[i,j] = true;
+                            } else if (levelMap[i,j-1] == 4 && rotationMap[i, j-1] == 90){
+
+                                if (levelMap[i-1, j]== 4 && rotationMap[i-1,j] == 90)
+                                    rotationMap[i,j] = 180;
+
+                                if (levelMap[i-1, j] == 3 && rotationMap[i-1, j] != 0){
+                                    rotationMap[i,j] = 270;
+                                }
+
+
+                            }
+
+
+
+                        }
+                    }
+  
+                }
+
+
+                //adjusting junctions
+                if(levelMap[i,j] == 7){
+
+                    if(i == 0) rotationMap[i,j] = 90; else
+                        if(levelMap[i-1, j] == 0 || levelMap[i-1, j] == 5 || levelMap[i-1, j] == 6){
+                            rotationMap[i,j] = 0;
+                        }
+                    if(j == 0) rotationMap[i,j] = 0; else
+                        if(levelMap[i,j-1] == 0 || levelMap[i, j-1] == 5 || levelMap[i, j-1] == 6){
+                            rotationMap[i,j] = 90;
+                        }
+
+
+                    if(j == 13) /*90 or 180*/  rotationMap[i,j] = 90; else
+                        if(levelMap[i,j+1] == 0 || levelMap[i, j+1] == 5 || levelMap[i, j+1] == 6){
+                            rotationMap[i,j] = 90;
+                        }
+
+                    if(i == 14) rotationMap[i,j] = 90; else
+                        if(levelMap[i+1,j] == 0 || levelMap[i+1, j] == 5 || levelMap[i+1, j] == 6){
+                            rotationMap[i,j] = 180;
+                        }
+
+                }
+            }
+
+
+        }
 
     
-    void Awake(){
-
-
-        for (int i = 0; i < 30; i++){
-                for (int j = 0; j < 28; j++){ 
-                    if(i < 15)
-                        
-                        //hai semplicemente invertito i e j in drawtile
-                        DrawTile(j,i, halfLevelBottom[i,j]);
-                    else {
-                        DrawTile(j,i, halfLevelUp[i - 15,j]);
-                    }
-                }
-            }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-        if (update){
-
-            DestroyAllTiles();
-            update = false;
-
-            for (int i = 0; i < 30; i++){
-                for (int j = 0; j < 28; j++){
-
-                    FlipHorizontallyLevel();
-                    CreateBelowPart();
-
-                    FlipVerticallyLevel();
-                    
-                    if(i < 15)
-                        
-                        //hai semplicemente invertito i e j in drawtile
-                        DrawTile(j,i, halfLevelBottom[i,j]);
-                    else {
-                        DrawTile(j,i, halfLevelUp[i - 15,j]);
-                    }
-                }
-            }
-        }
-
-        if (set_position){
-            set_position = false;
-            SetPosition();
-        }
-
-        if (delete){
-            delete = false;
-            DestroyAllTiles();
-        }
-
 
     }
 
+    bool checkAround(int x, int y){
+        bool result = false;
+        if((levelMap[x-1,y] != 0) && (levelMap[x-1,y] != 5) && (levelMap[x-1,y] != 6)){
+            if ((levelMap[x+1,y] != 0) && (levelMap[x+1,y] != 5) && (levelMap[x+1,y] != 6)){
+                if ((levelMap[x,y+1] != 0) && (levelMap[x,y+1] != 5) && (levelMap[x,y+1] != 6)) {
+                    if ((levelMap[x,y-1] != 0) && (levelMap[x,y-1] != 5) && (levelMap[x,y-1] != 6)){
+                        result = true;
+                    } 
+                } 
+            } 
+        }
+        
+        
+        return result;    
+    }
+    
     void SetPosition(){
 
-        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tiles");
-
-        int n = 0;
-
-        for (int i = 0; i < 30; i ++){
+        for (int i = 0; i < 29; i ++){
             for (int j = 0; j < 28; j++){
 
                 // j è la y
                 // i è la x
-
                 if (j > 13 && i <15){ //quadrante in alto a sx
-                   tiles[n].transform.eulerAngles = new Vector3(0,0,halfRotationBottom[i,j] + 90);
+                   tilesOrdered[i,j].transform.eulerAngles = new Vector3(0,180,halfRotationBottom[i,j]);
                 } else if (i < 15 && j <=14){ // quadrante in basso a sx
-                    tiles[n].transform.eulerAngles = new Vector3(0,180,halfRotationBottom[i,j] + 90);
+                    tilesOrdered[i,j].transform.eulerAngles = new Vector3(0,0,halfRotationBottom[i,j]);
                 } else if (i >= 15){ // quadrante destro
-                    tiles[n].transform.eulerAngles = new Vector3(180,0,halfRotationUp[i - 15,j] + 90);
+                   tilesOrdered[i,j].transform.eulerAngles = new Vector3(180,180,halfRotationUp[i - 14,j]) ;
                     if (j <14){
-                        tiles[n].transform.eulerAngles = new Vector3(180,180,halfRotationUp[i - 15,j] +90);
+                        tilesOrdered[i,j].transform.eulerAngles = new Vector3(180,0,halfRotationUp[i - 14,j]);
                     }
                 }
 
-                /*if( i >= 15){ //parte sotto????
-                    tiles[n].transform.eulerAngles = new Vector3(0,180,halfRotationBottom[i-15,j] + 90);
-                } else{
-                    tiles[n].transform.eulerAngles = new Vector3(0,180,halfRotationBottom[i,j] + 90);
-                }
+                
 
-                if ( j >= 14 && i >= 15){
-                    tiles[n].transform.eulerAngles = new Vector3(0,180,halfRotationBottom[i-15,j] - 90);
-                }*/
                 
-                
-                n++;
 
             }
-        }      
-    }
-
-    void Rotate90(){
-
-        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tiles");
-
-        for (int c = 0; c < tiles.Length; c++){
-            var otherPosn = tiles[c].transform.rotation;
-
-            Quaternion target = Quaternion.Euler(otherPosn.x, otherPosn.y, 90);
-            tiles[c].transform.rotation = target;
-            //tiles[n].transform.Rotate(0.0f, 0.0f, 90.0f, Space.Self);
         }
+
+
     }
+
+
+    void Start(){
+
+        DestroyAllTiles();
+
+        CreateRotationMap();
+        FlipHorizontallyLevel();
+        CreateBelowPart();
+        FlipVerticallyLevel();
+                
+        for (int i = 0; i < 29; i++){
+            for (int j = 0; j < 28; j++){
+    
+                if(i < 15)
+                    
+                    //hai semplicemente invertito i e j in drawtile
+                    DrawTile(j,i, halfLevelBottom[i,j]);
+                else 
+                    DrawTile(j,i, halfLevelUp[i - 14,j]);
+                
+                     
+            }
+
+
+        }
+
+        SetPosition();
+
+
+        
+    }
+    
+    
+    
 
     void DestroyAllTiles()
     {
-        GameObject[] tiles = GameObject.FindGameObjectsWithTag("Tiles");
+        GameObject[] tiles = GameObject.FindGameObjectsWithTag("GameController");
 
         for(int i = 0; i < tiles.Length; i++)
         {
@@ -206,7 +403,6 @@ public class LevelLayout : MonoBehaviour
     }
 
     
-
     void FlipVerticallyLevel()
     {
         halfLevelUp = new int[15,28];
@@ -242,8 +438,7 @@ public class LevelLayout : MonoBehaviour
         int rows = levelMap.GetLength(0);
         int i = 0;
         
-
-
+        
         for (int row = 0; row < rows; row++)
         {
             i = 0;
@@ -252,19 +447,21 @@ public class LevelLayout : MonoBehaviour
             {
                 levelMapHFlip[row, i] = levelMap[row,index];
                 rotationMapHFlip[row,i] = rotationMap[row,index];
+                
                 i++;
             } 
         }
     }
 
 
+
     private void DrawTile(int x, int y, int val){
         GameObject g = new GameObject();
-        g.gameObject.tag="Tiles";
+        g.gameObject.tag="GameController";
         g.transform.position = new Vector3(x, y);
         SpriteRenderer renderer = g.AddComponent<SpriteRenderer>();
         Animator animator = g.AddComponent<Animator>();
-        //AnimatorController ac = g.AddComponent<AnimatorController>();
+        
         
         switch (val)
         {
@@ -292,12 +489,17 @@ public class LevelLayout : MonoBehaviour
                 renderer.sprite = pellet;
             break;
             case 6:
-                Instantiate(powerPellet, new Vector3(x,y), Quaternion.identity);
+                var go = Instantiate(powerPellet, new Vector3(x,y), Quaternion.identity);
+                go.gameObject.tag = "GameController";
+                g = go;
             break;
             case 7:
                 g.transform.position = new Vector3(x,y);
                 renderer.sprite = junction;
             break;
         }
+
+        tilesOrdered[y,x] = g;
+
     }
 }

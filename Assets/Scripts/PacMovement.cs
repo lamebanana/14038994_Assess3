@@ -10,50 +10,58 @@ public class PacMovement : MonoBehaviour
 	private AudioSource source;
 
 	private string[] triggers = {"GoRight","GoDown", "GoLeft", "GoUp"};
-	/*private Transform[] points = new Transform[4]; /*{{6,28, 0}, {12,28, 0},
-									{12,24, 0}, {6,24, 0}};*/
 
-	private Vector3[] patrol = {new Vector3(6,28, 0), new Vector3(12,28, 0), new Vector3(12,24, 0),
-								new Vector3(6,24, 0)};
+	private Vector3[] startPoints = {new Vector3(6,27, 0), new Vector3(12,27, 0), new Vector3(12,23, 0),
+								new Vector3(6,23, 0)};
 
-	private IEnumerator coroutine;
-
-	/*[SerializeField]	
- 	public float speed = 5f;*/
+	private Vector3[] endPoints = {new Vector3(12,27, 0), new Vector3(12,23, 0), new Vector3(6,23, 0),
+								new Vector3(6,27, 0)};
 
     void Start()
     {
-		//GameObject prefab = pacman.GetComponent<AudioSource>();
-		float r = Random.Range(0.5f, 1.1f);
-		coroutine = move(r);
+		anim = pacman.GetComponent<Animator>();
 		source = pacman.GetComponent<AudioSource>();
+		StartCoroutine(MoveToPosition());
+    }
+
+
+    
+	IEnumerator MoveToPosition()
+    {
+
+		float desiredDuration = 2.0f ;
+
+		while (true){
+			for (int i = 0 ; i < 4; i ++){
+
+				float elapsedTime = 0.0f;
+				anim.SetTrigger(triggers[i]);
+
+				while(elapsedTime < desiredDuration){
+
+
+					pacman.position = Vector3.Lerp(startPoints[i], endPoints[i], elapsedTime/desiredDuration);
+					elapsedTime += Time.deltaTime;
+					
+
+					while(!source.isPlaying){
+						source.Play();
+					}
+					
+					yield return new WaitForEndOfFrame();
+				}
+
+			}
 		
-		StartCoroutine(coroutine);
-		
+
+		}
+
 		
     }
 
-	void Update(){
-		
-	}
-     
-     
-    IEnumerator move(float waitTime)
-	{
-		while (true){
-			
-			for (int i = 0 ; i < 4; i++){
 
-				anim = pacman.GetComponent<Animator>();
-				anim.SetTrigger(triggers[i]);
-				pacman.position = patrol[i];
+	
 
-				source.Play();
-				
-				yield return new WaitForSeconds(waitTime);
-			}
-		}
-		
-	}
+
     
 }
