@@ -19950,7 +19950,7 @@ SpriteRenderer:
   m_Size: {x: 0.12, y: 0.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &446196740
@@ -30639,7 +30639,7 @@ SpriteRenderer:
   m_Size: {x: 0.12, y: 0.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &720248674
@@ -39639,6 +39639,10 @@ PrefabInstance:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: dc07a2035a1804b59acf47ba0d9ad259, type: 3}
+    - target: {fileID: 7069764009831337400, guid: 0875bf0b0709b4410b10b82bcb579e4a, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 535d76f76412a48079827246d33d1e3f, type: 2}
     - target: {fileID: 7069764009831337413, guid: 0875bf0b0709b4410b10b82bcb579e4a, type: 3}
       propertyPath: m_Name
       value: pac_student
@@ -42092,7 +42096,7 @@ SpriteRenderer:
   m_Size: {x: 0.12, y: 0.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &996693732
@@ -47412,6 +47416,9 @@ MonoBehaviour:
   pellet: {fileID: 21300000, guid: e355227dfee7948feb2e51cdbd0b69a9, type: 3}
   junction: {fileID: 21300000, guid: a9e845bb531024606a565a64f31c0bc5, type: 3}
   powerPellet: {fileID: 8983456757787489489, guid: c2a8ba089d9874b3b9b14ed19c600b20, type: 3}
+  update: 0
+  set_position: 0
+  delete: 0
 --- !u!1 &1146406475
 GameObject:
   m_ObjectHideFlags: 0
@@ -72279,7 +72286,7 @@ SpriteRenderer:
   m_Size: {x: 0.12, y: 0.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &1785325201
