@@ -30,32 +30,37 @@ public class LevelGenerator : MonoBehaviour
         {0,0,0,0,0,0,5,0,0,0,4,0,0,0}, 
     }; 
 
+     
+
+    
     private int[,] levelMapHFlip;
-    private int[,] completeLevel = new int[30, 28];
-    private int[,] halfLevelBottom = new int[15,28];
-    private int[,] halfLevelUp = new int[15,28];
+    private int[,] halfLevelBottom;
+    private int[,] halfLevelUp;
 
     private int[,] rotationMapHFlip;
-    private int[,] completeRotation = new int[30, 28];
-    private int[,] halfRotationBottom = new int[15,28];
-    private int[,] halfRotationUp = new int[15,28];
+    private int[,] halfRotationBottom;
+    private int[,] halfRotationUp;
 
 
 // these rotations are calculated for corner sprites like |^ and centered walls like |
-    private int [,] rotationMap = new int[15,14];
+    private int [,] rotationMap;
+    private bool [,] rotationMap2;
 
-    private bool [,] rotationMap2 = new bool[15,14];
-
-    private GameObject[,] tilesOrdered = new GameObject[30,28];
+    private GameObject[,] tilesOrdered;
 
 
     void CreateRotationMap(){
 
         // level map [15, 14]
+        int columns = levelMap.GetLength(1);
+        int rows = levelMap.GetLength(0);
+
+        rotationMap = new int[rows, columns];
+        rotationMap2 = new bool[rows, columns];
 
 
-        for (int j = 0; j < 14; j ++){
-            for (int i = 0; i < 15; i ++){
+        for (int j = 0; j < columns; j ++){
+            for (int i = 0; i < rows; i ++){
 
                 
                 rotationMap[i,j] = 0;
@@ -75,7 +80,7 @@ public class LevelGenerator : MonoBehaviour
 
                     }
 
-                    if (i != 14){
+                    if (i != rows-1){
                         if ((levelMap[i+1,j] == 2 || levelMap[i+1,j] == 4 || levelMap[i+1, j] == 7)){
                                 if(!rotationMap2[i+1,j])
                                     rotationMap[i+1,j] = 90;
@@ -94,7 +99,7 @@ public class LevelGenerator : MonoBehaviour
                         }
                     } 
                     
-                    if (j != 13){
+                    if (j != (columns-1)){
 
                         if ((levelMap[i,j+1] == 2 || levelMap[i,j+1] == 4 || levelMap[i, j+1] == 7)){
                             if(!rotationMap2[i,j+1])
@@ -128,13 +133,18 @@ public class LevelGenerator : MonoBehaviour
                         rotationMap2[i,j] = true;
                     }
 
-                    if ( i == 14 && (levelMap[i-1,j] == 0 || levelMap[i-1,j] == 5 || levelMap[i-1,j] == 6)){
+                    if ( i == (rows-1) && (levelMap[i-1,j] == 0 || levelMap[i-1,j] == 5 || levelMap[i-1,j] == 6)){
                         rotationMap[i,j] = 90;
                         rotationMap2[i,j] = true;
                     }
 
-                    if ( j == 13 && (levelMap[i,j-1] == 0 || levelMap[i,j-1] == 5 || levelMap[i,j-1] == 6)){
+                    if ( j == (columns-1) && (levelMap[i,j-1] == 0 || levelMap[i,j-1] == 5 || levelMap[i,j-1] == 6)){
                         rotationMap[i,j] = 0;
+                        rotationMap2[i,j] = true;
+                    }
+
+                    if ( j == 0 && (levelMap[i,j+1] == 0 || levelMap[i,j+1] == 5 || levelMap[i,j+1] == 6)){
+                        rotationMap[i,j] = 270;
                         rotationMap2[i,j] = true;
                     }
                 }
@@ -142,7 +152,7 @@ public class LevelGenerator : MonoBehaviour
                 // adjusting corners
                 if (levelMap[i,j] == 1 || levelMap[i,j] == 3){
 
-                    if(i < 14 && j < 13){
+                    if(i < (rows-1) && j < (columns-1)){
                         if ((levelMap[i,j + 1] == 2 || levelMap[i,j + 1] == 4) && (levelMap[i+1,j] == 2 || levelMap[i+1,j] == 4)){
 
 
@@ -189,17 +199,15 @@ public class LevelGenerator : MonoBehaviour
 
                         if ((levelMap[i-1,j] == 1 || levelMap[i-1,j] == 3) && (levelMap[i,j-1] == 2 || levelMap[i,j-1] == 4)){
 
-                             //if(rotationMap2[i,j-1]){
-
                                     rotationMap[i,j] = 270;
                                     rotationMap2[i,j] = true;
-                             //}
+
                         }
                     }
 
                 
 
-                    if (i < 14 && j > 0){
+                    if (i < (rows-1) && j > 0){
                         if ((levelMap[i+1,j] == 2 || levelMap[i+1,j] == 4) && (levelMap[i,j-1] == 2 || levelMap[i,j-1] == 4)){
 
                             if(rotationMap2[i+1,j] || rotationMap2[i, j-1]){
@@ -230,12 +238,13 @@ public class LevelGenerator : MonoBehaviour
 
                     //adjusting pieces that are surrounded by tiles that arent empty or pellets
 
-                    if(i < 13 && i > 0 && j < 13 && j > 0){
+                    if(i < (rows-1) && i > 0 && j < (columns-1) && j > 0){
                         if (checkAround(i,j)){
 
                             
+                            
                             if (levelMap[i,j-1] == 4 && rotationMap[i, j-1] == 0){
-
+                                
                                 if (levelMap[i-1, j]== 4 && rotationMap[i-1,j] == 0)
                                     rotationMap[i,j] = 0;
 
@@ -245,11 +254,14 @@ public class LevelGenerator : MonoBehaviour
                                 rotationMap2[i,j] = true;
                             } else if (levelMap[i,j-1] == 4 && rotationMap[i, j-1] == 90){
 
-                                if (levelMap[i-1, j]== 4 && rotationMap[i-1,j] == 90)
-                                    rotationMap[i,j] = 180;
 
-                                if (levelMap[i-1, j] == 3 && rotationMap[i-1, j] != 0){
+                                if (levelMap[i-1, j]== 4 && rotationMap[i,j-1] == 90){
                                     rotationMap[i,j] = 270;
+                                }
+                                    
+
+                                if (levelMap[i, j-1] == 3 && rotationMap[i, j-1] != 0){
+                                    rotationMap[i,j] = 180;
                                 }
 
 
@@ -276,12 +288,12 @@ public class LevelGenerator : MonoBehaviour
                         }
 
 
-                    if(j == 13) /*90 or 180*/  rotationMap[i,j] = 90; else
+                    if(j == (columns-1)) /*90 or 180*/  rotationMap[i,j] = 90; else
                         if(levelMap[i,j+1] == 0 || levelMap[i, j+1] == 5 || levelMap[i, j+1] == 6){
                             rotationMap[i,j] = 90;
                         }
 
-                    if(i == 14) rotationMap[i,j] = 90; else
+                    if(i == (rows-1)) rotationMap[i,j] = 90; else
                         if(levelMap[i+1,j] == 0 || levelMap[i+1, j] == 5 || levelMap[i+1, j] == 6){
                             rotationMap[i,j] = 180;
                         }
@@ -314,25 +326,23 @@ public class LevelGenerator : MonoBehaviour
     
     void SetPosition(){
 
-        for (int i = 0; i < 29; i ++){
-            for (int j = 0; j < 28; j++){
+        int columns = levelMap.GetLength(1);
+        int rows = levelMap.GetLength(0);
 
-                // j è la y
-                // i è la x
-                if (j > 13 && i <15){ //quadrante in alto a sx
+        for (int i = 0; i < ((rows*2)-1); i ++){
+            for (int j = 0; j < (columns*2); j++){
+
+            
+                if (j > (columns-1) && i < rows){ //quadrante in alto a sx
                    tilesOrdered[i,j].transform.eulerAngles = new Vector3(0,180,halfRotationBottom[i,j]);
-                } else if (i < 15 && j <=14){ // quadrante in basso a sx
+                } else if (i < rows && j <=columns){ // quadrante in basso a sx
                     tilesOrdered[i,j].transform.eulerAngles = new Vector3(0,0,halfRotationBottom[i,j]);
-                } else if (i >= 15){ // quadrante destro
-                   tilesOrdered[i,j].transform.eulerAngles = new Vector3(180,180,halfRotationUp[i - 14,j]) ;
-                    if (j <14){
-                        tilesOrdered[i,j].transform.eulerAngles = new Vector3(180,0,halfRotationUp[i - 14,j]);
+                } else if (i >= rows){ // quadrante destro
+                   tilesOrdered[i,j].transform.eulerAngles = new Vector3(180,180,halfRotationUp[i - (rows-1),j]) ;
+                    if (j < columns){
+                        tilesOrdered[i,j].transform.eulerAngles = new Vector3(180,0,halfRotationUp[i - (rows-1),j]);
                     }
                 }
-
-                
-
-                
 
             }
         }
@@ -343,6 +353,11 @@ public class LevelGenerator : MonoBehaviour
 
     void Start(){
 
+        int columns = levelMap.GetLength(1);
+        int rows = levelMap.GetLength(0);
+
+        tilesOrdered = new GameObject[rows*2,columns*2];
+
         DestroyAllTiles();
 
         CreateRotationMap();
@@ -350,15 +365,15 @@ public class LevelGenerator : MonoBehaviour
         CreateBelowPart();
         FlipVerticallyLevel();
                 
-        for (int i = 0; i < 29; i++){
-            for (int j = 0; j < 28; j++){
+        for (int i = 0; i < ((rows*2)-1); i++){
+            for (int j = 0; j < columns*2; j++){
     
-                if(i < 15)
+                if(i < rows)
                     
                     //hai semplicemente invertito i e j in drawtile
                     DrawTile(j,i, halfLevelBottom[i,j]);
                 else 
-                    DrawTile(j,i, halfLevelUp[i - 14,j]);
+                    DrawTile(j,i, halfLevelUp[i - (rows-1),j]);
                 
                      
             }
@@ -388,14 +403,20 @@ public class LevelGenerator : MonoBehaviour
 
     void CreateBelowPart(){
 
-        for (int i = 0; i < 15; i++){
-            for (int j = 0; j < 28; j++){
-                if(j < 14){
+        int columns = levelMap.GetLength(1);
+        int rows = levelMap.GetLength(0);
+
+        halfLevelBottom = new int[rows,columns*2];
+        halfRotationBottom = new int[rows, columns*2];
+
+        for (int i = 0; i < rows; i++){
+            for (int j = 0; j < columns*2; j++){
+                if(j < columns){
                     halfLevelBottom[i,j] = levelMap[i,j];
                     halfRotationBottom[i,j] = rotationMap[i,j];
                 } else{
-                    halfLevelBottom[i,j] = levelMapHFlip[i, j-14];
-                    halfRotationBottom[i,j] = rotationMapHFlip[i, j -14];
+                    halfLevelBottom[i,j] = levelMapHFlip[i, j-columns];
+                    halfRotationBottom[i,j] = rotationMapHFlip[i, j -columns];
                 }
             }
         }
@@ -404,11 +425,14 @@ public class LevelGenerator : MonoBehaviour
     
     void FlipVerticallyLevel()
     {
-        halfLevelUp = new int[15,28];
-        halfRotationUp = new int[15,28];
+        
+        
 
         int columns = halfLevelBottom.GetLength(1);
         int rows = halfLevelBottom.GetLength(0);
+
+        halfLevelUp = new int[rows,columns];
+        halfRotationUp = new int[rows,columns];
 
         int i = 0;
   
@@ -431,11 +455,13 @@ public class LevelGenerator : MonoBehaviour
 
     void FlipHorizontallyLevel()
     {
-        levelMapHFlip = new int[15,14];
-        rotationMapHFlip = new int[15,14];
+        
         int columns = levelMap.GetLength(1);
         int rows = levelMap.GetLength(0);
         int i = 0;
+
+        levelMapHFlip = new int[rows,columns];
+        rotationMapHFlip = new int[rows,columns];
         
         
         for (int row = 0; row < rows; row++)
