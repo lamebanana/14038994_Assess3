@@ -38904,6 +38904,10 @@ PrefabInstance:
       propertyPath: m_audioClip
       value: 
       objectReference: {fileID: 8300000, guid: dc07a2035a1804b59acf47ba0d9ad259, type: 3}
+    - target: {fileID: 7069764009831337400, guid: 0875bf0b0709b4410b10b82bcb579e4a, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 535d76f76412a48079827246d33d1e3f, type: 2}
     - target: {fileID: 7069764009831337413, guid: 0875bf0b0709b4410b10b82bcb579e4a, type: 3}
       propertyPath: m_Name
       value: pac_student
