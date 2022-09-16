@@ -34,15 +34,13 @@ public class PacMovement : MonoBehaviour
 		while (true){
 			for (int i = 0 ; i < 4; i ++){
 
-				float elapsedTime = 0.0f;
 				anim.SetTrigger(triggers[i]);
+				float elapsedTime = 0.0f;
 
 				while(elapsedTime < desiredDuration){
 
-
 					pacman.position = Vector3.Lerp(startPoints[i], endPoints[i], elapsedTime/desiredDuration);
 					elapsedTime += Time.deltaTime;
-					
 
 					while(!source.isPlaying){
 						source.Play();
